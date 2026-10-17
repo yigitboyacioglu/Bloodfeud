@@ -12,8 +12,8 @@ Available for **retail (Midnight)** and **WoW Forever**.
 
 1. Go to the [latest release](../../releases/latest).
 2. Download the zip for your game:
-   - **Bloodfeud v X.zip** for retail
-   - **BloodfeudForever v X.zip** for WoW Forever
+   - **Bloodfeud.v.X.zip** for retail
+   - **BloodfeudForever.v.X.zip** for WoW Forever
 3. Extract it into your game's `Interface\AddOns` folder, for example
    `World of Warcraft\_retail_\Interface\AddOns` for retail.
    You should end up with an `AddOns\Bloodfeud` (or `AddOns\BloodfeudForever`) folder.
