@@ -1,0 +1,15 @@
+## Interface: 16001
+## AllowLoadGameType: camelot
+## Title: Bloodfeud Forever
+## Notes: Open-world PvP kill feed and shared leaderboard (WoW Forever)
+## Author: "Trickyowl" Yiğit Boyacıoğlu
+## Version: 0.5.0
+## IconTexture: Interface\AddOns\BloodfeudForever\media\icon
+## SavedVariables: BloodfeudForeverDB
+
+core.lua
+titles.lua
+db.lua
+sync.lua
+engine.lua
+ui.lua
