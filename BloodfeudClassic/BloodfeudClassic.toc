@@ -1,0 +1,15 @@
+## Interface: 11509
+## Title: Bloodfeud Classic
+## Notes: Open-world PvP kill feed and shared leaderboard (Classic Era)
+## Author: "Trickyowl" Yiğit Boyacıoğlu
+## Version: 0.6.0
+## IconTexture: Interface\AddOns\BloodfeudClassic\media\icon
+## SavedVariables: BloodfeudClassicDB
+
+core.lua
+titles.lua
+db.lua
+sync.lua
+engine.lua
+ui.lua
+

@@ -2,7 +2,7 @@
 
 Bloodfeud turns open-world PvP in World of Warcraft into a competition. Every kill between Bloodfeud players shows up in a live kill feed and counts toward a shared leaderboard that everyone sees the same way.
 
-Available for **retail (Midnight)** and **WoW Forever**.
+Available for **retail (Midnight)**, **Classic Era** (including Season of Discovery and Hardcore) and **WoW Forever**.
 
 > **Alpha:** Bloodfeud is still in early testing. If something looks wrong, please open an [issue](../../issues).
 
@@ -13,10 +13,12 @@ Available for **retail (Midnight)** and **WoW Forever**.
 1. Go to the [latest release](../../releases/latest).
 2. Download the zip for your game:
    - **Bloodfeud.v.X.zip** for retail
+   - **BloodfeudClassic.v.X.zip** for Classic Era, Season of Discovery and Hardcore
    - **BloodfeudForever.v.X.zip** for WoW Forever
 3. Extract it into your game's `Interface\AddOns` folder, for example
-   `World of Warcraft\_retail_\Interface\AddOns` for retail.
-   You should end up with an `AddOns\Bloodfeud` (or `AddOns\BloodfeudForever`) folder.
+   `World of Warcraft\_retail_\Interface\AddOns` for retail or
+   `World of Warcraft\_classic_era_\Interface\AddOns` for Classic Era.
+   You should end up with an `AddOns\Bloodfeud` (or `BloodfeudClassic` / `BloodfeudForever`) folder.
 4. Restart the game or type `/reload`.
 
 To update, delete the old folder and extract the new zip the same way. Your points are not stored in the addon folder and won't be lost.
@@ -49,12 +51,17 @@ Title holders show their title in their tooltip for every Bloodfeud player to se
 | Harandar | Warden of Harandar | Terror of Harandar |
 | Coiled Isles | Sovereign of the Coiled Isles | Reaver of the Coiled Isles |
 
-| Forever zone | Alliance | Horde |
+| Classic Era and Forever zone | Alliance | Horde |
 |---|---|---|
 | Stranglethorn Vale | Terror of Stranglethorn | Stranglethorn's Headhunter |
 | Hillsbrad Foothills | Avenger of Southshore | Reaper of Tarren Mill |
 | Ashenvale | Sentinel of Ashenvale | Warsong Ravager |
 | Arathi Highlands | Shield of Stromgarde | Fury of Hammerfall |
+| Eastern Plaguelands | Crusader of the Plaguelands | Blight of the Plaguelands |
+| Burning Steppes | Breaker of Blackrock | Warbringer of the Steppes |
+| Silithus | Duneslayer of Silithus | Sandreaver of Silithus |
+| Winterspring | Frostblade of Winterspring | Winterspring Stalker |
+| Felwood | Purifier of Felwood | Corruptor of Felwood |
 | Orgrimmar | Bane of Orgrimmar | Defender of Orgrimmar |
 | Stormwind City | Defender of Stormwind | Bane of Stormwind |
 
@@ -78,7 +85,7 @@ Bloodfeud only tracks the open world. Dungeons, raids, battlegrounds and arenas 
 
 | Command | What it does |
 |---|---|
-| `/bf` | Open or close the kill feed (`/bff` also works in Forever) |
+| `/bf` | Open or close the kill feed (`/bfc` also works in Classic, `/bff` in Forever) |
 | `/bf stats` | Your stats, the leaderboard and titles |
 | `/bf titles` | Turn titles in tooltips on or off |
 | `/bf sync` | Grab missed kills right away |

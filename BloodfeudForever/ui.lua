@@ -1053,7 +1053,7 @@ addonTable.UI.ToggleStatsWindow = ToggleStatsWindow
 -- MINIMAP BUTTON
 -- =========================================================
 local function UpdateMinimapButtonPosition()
-    if not minimapButton or not BloodfeudForeverDB then return end
+    if type(minimapButton) ~= "table" or not BloodfeudForeverDB then return end -- not our own button (LibDBIcon)
     local angle = math.rad(BloodfeudForeverDB.minimapPos or 45)
     local radius = 103
     local x = math.cos(angle) * radius
@@ -1061,25 +1061,61 @@ local function UpdateMinimapButtonPosition()
     minimapButton:SetPoint("CENTER", Minimap, "CENTER", x, y)
 end
 
+local function MinimapTooltip(tooltip)
+    tooltip:AddLine(ICON_INLINE .. " " .. TITLE)
+    tooltip:AddLine("Left Click: Toggle Kill Feed", 1, 1, 1)
+    tooltip:AddLine("Right Click: Statistics & Leaderboard", 1, 1, 1)
+    tooltip:AddLine("Drag: Move Icon", 0.7, 0.7, 0.7)
+end
+
+-- If another addon has loaded LibDataBroker + LibDBIcon (most addon packs do), the minimap button is
+-- registered through them: button collectors and minimap skins then handle it like any other addon's.
+local function CreateBrokerLauncher()
+    local LDB = LibStub and LibStub("LibDataBroker-1.1", true)
+    local DBIcon = LibStub and LibStub("LibDBIcon-1.0", true)
+    if not (LDB and DBIcon) then return false end
+    local launcher = LDB:NewDataObject(addonName, {
+        type = "launcher",
+        label = "Bloodfeud",
+        icon = ICON_SMALL,
+        OnClick = function(_, button)
+            if button == "RightButton" then ToggleStatsWindow() else ToggleFeedWindow() end
+        end,
+        OnTooltipShow = MinimapTooltip,
+    })
+    if not launcher then return false end
+    BloodfeudForeverDB.minimapIcon = BloodfeudForeverDB.minimapIcon or {}
+    DBIcon:Register(addonName, launcher, BloodfeudForeverDB.minimapIcon)
+    return true
+end
+
 local function CreateMinimapButton()
     if minimapButton then return end
+    if CreateBrokerLauncher() then
+        minimapButton = true
+        return
+    end
 
+    -- Own button, built like a LibDBIcon button (same layers and sizes, .icon field) so minimap
+    -- button collectors can still skin it
     minimapButton = CreateFrame("Button", "BloodfeudForeverMinimapButton", Minimap)
-    minimapButton:SetSize(32, 32)
+    minimapButton:SetSize(31, 31)
     minimapButton:SetFrameStrata("MEDIUM")
     minimapButton:SetFrameLevel(8)
 
-    local icon = minimapButton:CreateTexture(nil, "BACKGROUND")
-    icon:SetSize(20, 20)
+    local background = minimapButton:CreateTexture(nil, "BACKGROUND")
+    background:SetSize(24, 24)
+    background:SetPoint("CENTER", minimapButton, "CENTER", 0, 0)
+    background:SetTexture("Interface\\Minimap\\UI-Minimap-Background")
+
+    local icon = minimapButton:CreateTexture(nil, "ARTWORK")
+    icon:SetSize(18, 18)
     icon:SetPoint("CENTER", minimapButton, "CENTER", 0, 0)
     icon:SetTexture(ICON_SMALL)
-    -- Round minimap button: circle mask like other addons
-    if icon.SetMask then
-        pcall(icon.SetMask, icon, "Interface\\CharacterFrame\\TempPortraitAlphaMask")
-    end
+    minimapButton.icon = icon
 
     local border = minimapButton:CreateTexture(nil, "OVERLAY")
-    border:SetSize(52, 52)
+    border:SetSize(50, 50)
     border:SetPoint("TOPLEFT", minimapButton, "TOPLEFT", 0, 0)
     border:SetTexture("Interface\\Minimap\\MiniMap-TrackingBorder")
 
@@ -1118,10 +1154,7 @@ local function CreateMinimapButton()
 
     minimapButton:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-        GameTooltip:AddLine(ICON_INLINE .. " " .. TITLE)
-        GameTooltip:AddLine("Left Click: Toggle Kill Feed", 1, 1, 1)
-        GameTooltip:AddLine("Right Click: Statistics & Leaderboard", 1, 1, 1)
-        GameTooltip:AddLine("Drag: Move Icon", 0.7, 0.7, 0.7)
+        MinimapTooltip(GameTooltip)
         GameTooltip:Show()
     end)
     minimapButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1253,6 +1286,8 @@ end
 
 if TooltipDataProcessor and TooltipDataProcessor.AddTooltipPostCall then
     TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, OnTooltipSetUnit)
+elseif GameTooltip and GameTooltip:HasScript("OnTooltipSetUnit") then
+    GameTooltip:HookScript("OnTooltipSetUnit", OnTooltipSetUnit) -- older clients without TooltipDataProcessor
 end
 
 local function AttachIndicator(frame)
